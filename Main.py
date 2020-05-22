@@ -10,9 +10,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 
-OPEN_ID = "https://esgf-data.dkrz.de/esgf-idp/openid/vildnex"
-PASSWORD = "Ab1-JvzbPRxE"
-DOWNLOAD_DIR = "/run/media/vald/Common/KDD_DATA/"
+OPEN_ID = "<OPEN_ID>"
+PASSWORD = "<PASSWORD>"
+DOWNLOAD_DIR = "<DOWNLOAD_FOLDER>"
 
 
 def check_exists_by_xpath(by: By, value: str, driv: webdriver.Firefox):
@@ -24,17 +24,6 @@ def check_exists_by_xpath(by: By, value: str, driv: webdriver.Firefox):
 
 
 def download_wait(directory, timeout, nfiles=None):
-    """
-    Wait for downloads to finish with a specified timeout.
-    Args
-    ----
-    directory : str
-        The path to the folder where the files will be downloaded.
-    timeout : int
-        How many seconds to wait until timing out.
-    nfiles : int, defaults to None
-        If provided, also wait for the expected number of files.
-    """
     seconds = 0
     dl_wait = True
     while dl_wait and seconds < timeout:
@@ -114,9 +103,9 @@ for link_founded in href_links_founded_elements:
     files_size = len(files)
     file_index = 1
     for file in files:
-        print("DOWNLOAD: File {} out of {}".format(file_index, files_size))
+        print("START DOWNLOAD: File {} out of {}".format(file_index, files_size))
         file_index += 1
-
+ 
         driver.get(file)
         driver.find_element_by_link_text("HTTPServer").click()
 
@@ -128,4 +117,6 @@ for link_founded in href_links_founded_elements:
             WebDriverWait(driver, timeout).until(element_present)
             driver.find_element_by_id("password").send_keys(PASSWORD)
             driver.find_element_by_class_name("button").click()
+
         download_wait(DOWNLOAD_DIR, 60 * 30)
+        print("COMPLETE DOWNLOAD")
